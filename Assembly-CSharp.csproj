@@ -62,18 +62,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_MyFiles\Scripts\GUI\Item.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\FrameWork\HealthComponent\HealthCompnent.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Items\DraggableItem.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Managers\IBattleActions.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Player\InventoryComponent.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\FrameWork\HealthComponent\DamageComponent.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Player\PlayerBattleActions.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\Enemy\Ai\IteamInterface.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\BaseClasses\Stat.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\FrameWork\HealthComponent\HealthBar.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\Widget.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\GUI\Equipmet.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\GameplayWidgets\GameplayWidget.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Managers\BattleManager.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\InventoryUIManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\BaseClasses\CharacterStats.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\BaseClasses\Character.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\Data\PlayerStatsUIComponent.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\ValueGauge\StatusGauge.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\ValueGauge\ValueGauge.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Player\CharacterEqupment.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\WidgetComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

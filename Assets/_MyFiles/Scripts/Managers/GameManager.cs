@@ -12,20 +12,19 @@ public class Wave
 public class GameManager : MonoBehaviour
 {
     public static GameManager m_Instance;
-    [SerializeField] private Wave[] waves;
-    private int currentWave = 0;
     [Header("Player Info")]
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Transform PlayerSpawn;
-    [SerializeField] GameObject InventorySlotUI;
     private GameObject Player;
     [Header("Wave Data")]
     [SerializeField] GameObject BattleUI;
     [SerializeField] Wave[] Waves;
+    [Header("UI")]
+    [SerializeField] private UIManager UIManager;
+    [SerializeField] GameObject InventorySlotUI;
 
     [Header("Managers [READ ONLY]")]
     [SerializeField] private BattleManager CurrentBattle;
-    [SerializeField] private UIManager InventoryUIManager;
 
     private void Awake()
     {
@@ -44,7 +43,6 @@ public class GameManager : MonoBehaviour
             //Spawning Player
             GameObject playerGRP = Instantiate(PlayerPrefab, PlayerSpawn.transform.position, PlayerSpawn.transform.rotation);
             Player = playerGRP.GetComponentInChildren<Character>().gameObject;
-            CreateInventoryUIManager();
             LoadData();
 
         }
@@ -55,19 +53,13 @@ public class GameManager : MonoBehaviour
     }
     public GameObject GetPlayer() { return Player; }
 
-    public void CreateInventoryUIManager()
-    {
-        if (InventoryUIManager) return;
-
-        InventoryUIManager = gameObject.AddComponent<UIManager>();
-    }
     public GameObject GetBattleUI() { return BattleUI; }
     public void DestroyInventoryUIManager()
     {
-        Destroy(InventoryUIManager);
-        InventoryUIManager = null;
+        Destroy(UIManager);
+        UIManager = null;
     }
-    public UIManager GetInventoryUIManager() { return InventoryUIManager; }
+    public UIManager GetInventoryUIManager() { return UIManager; }
     public void CreateBattleManager(List<GameObject> enemyBattleList)
     {
         if (CurrentBattle) { return; }

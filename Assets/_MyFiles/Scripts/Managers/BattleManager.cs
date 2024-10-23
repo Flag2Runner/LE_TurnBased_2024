@@ -13,11 +13,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Transform EnemyPos;
     [SerializeField] private int Enemydead;
     [SerializeField] private int PlayerDead;
+    [SerializeField] private Wave[] waves;
+
 
     [SerializeField] private GameObject CurrentSelection;
     [SerializeField] private EActionType ActionType = EActionType.None;
 
     private List<GameObject> EnemyList = new List<GameObject>();
+
+    private int currentWave = 0;
+    private int Floor = 1;
 
     private UIManager BattleUI;
     private GameObject BattleCamera;
@@ -92,7 +97,7 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("Initializing Battle...");
             BattleStarted = true;
-           // GameManager.m_Instance.GetInventoryUIManager().GetInventoryGRP().SetActive(false);
+           //GameManager.m_Instance.GetInventoryUIManager().GetInventoryGRP().SetActive(false);
             GameObject BattleUIClone = Instantiate(GameManager.m_Instance.GetBattleUI(), this.gameObject.transform, false);
             BattleUI = BattleUIClone.GetComponent<UIManager>();
            // BattleUI.GetPlayerUI().SetActive(false);
@@ -127,7 +132,7 @@ public class BattleManager : MonoBehaviour
     {
         foreach (GameObject unit in TurnOrder)
         {
-           // unit.GetComponent<Character>().SetDiceNumber(GameManager.m_Instance.DiceRoll());
+           //unit.GetComponent<Character>().SetDiceNumber(GameManager.m_Instance.DiceRoll());
         }
 
        // TurnOrder = TurnOrder.OrderBy(x => x.GetComponent<UnitCharacter>().GetDiceNumber()).ToList();
@@ -171,7 +176,7 @@ public class BattleManager : MonoBehaviour
             SetBattleState(EBattleState.BattleWon);
             return;
         }
-        if (currentTurn.GetUnitType() == EUnitType.Player || currentTurn.GetUnitType() == EUnitType.Partner)
+        if (currentTurn.GetUnitType() == EUnitType.Player)
         {
             SetBattleState(EBattleState.PlayerTurn);
         }
@@ -299,7 +304,6 @@ public class BattleManager : MonoBehaviour
     public void EndTurn()
     {
         //List<GameObject> firstIndex;
-        //Homework
         //Move the first Instance to the end
         // TurnOrder.FindIndex(0,1,);
         //Move all the other instances up

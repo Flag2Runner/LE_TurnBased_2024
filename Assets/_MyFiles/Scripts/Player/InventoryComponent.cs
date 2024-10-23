@@ -4,7 +4,7 @@ using static UnityEditor.Progress;
 
 public class InventoryComponent : MonoBehaviour
 {
-    [Range(1, 15)][SerializeField] private int InventorySpace;
+    [Range(1, 20)][SerializeField] private int InventorySpace;
 
     [SerializeField] private List<Item> Items = new List<Item>();
 

@@ -10,7 +10,6 @@ public class Character : MonoBehaviour
     [SerializeField] private int DiceNumber;
     [SerializeField] private InventoryComponent CharacterInventory;
     [SerializeField] private CharacterEqupment CharacterEqupment;
-    [SerializeField] private Slider HealthSlider;
 
     private void Awake()
     {
@@ -18,18 +17,6 @@ public class Character : MonoBehaviour
         CharacterInventory = gameObject.AddComponent<InventoryComponent>();
         CharacterEqupment = gameObject.AddComponent<CharacterEqupment>();
         CharacterInventory.SetInventorySpace(15);
-    }
-    private void FixedUpdate()
-    {
-
-        if (CharacterStatsProfile != null)
-        {
-            HealthSlider.value = GetCharacterStats().GetCurrentHealth();
-        }
-        else
-        {
-            return;
-        }
     }
 
     public CharacterStats GetCharacterStats() { return CharacterStatsProfile; }
@@ -46,4 +33,4 @@ public class Character : MonoBehaviour
     }
 }
 
-public enum EUnitType { Player, Partner, Enemy, NPC }
+public enum EUnitType { Player, Enemy, NPC }
