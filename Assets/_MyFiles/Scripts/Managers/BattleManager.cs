@@ -170,12 +170,14 @@ public class BattleManager : MonoBehaviour
             SetBattleState(EBattleState.BattleLost);
             return;
         }
-        else if (Enemydead == TurnOrder.Count / 2)
+        
+        if (Enemydead == TurnOrder.Count / 2)
         {
             Debug.Log("Battle Won...");
             SetBattleState(EBattleState.BattleWon);
             return;
         }
+        
         if (currentTurn.GetUnitType() == EUnitType.Player)
         {
             SetBattleState(EBattleState.PlayerTurn);

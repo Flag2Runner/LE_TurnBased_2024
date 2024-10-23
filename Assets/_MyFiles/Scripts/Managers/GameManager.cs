@@ -12,6 +12,13 @@ public class Wave
 public class GameManager : MonoBehaviour
 {
     public static GameManager m_Instance;
+
+    public static GameManager Instance
+    {
+        get;
+        private set;
+    }
+    
     [Header("Player Info")]
     [SerializeField] GameObject PlayerPrefab;
     [SerializeField] Transform PlayerSpawn;
@@ -41,8 +48,8 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefab && PlayerSpawn)
         {
             //Spawning Player
-            GameObject playerGRP = Instantiate(PlayerPrefab, PlayerSpawn.transform.position, PlayerSpawn.transform.rotation);
-            Player = playerGRP.GetComponentInChildren<Character>().gameObject;
+            GameObject playerGrp = Instantiate(PlayerPrefab, PlayerSpawn.transform.position, PlayerSpawn.transform.rotation);
+            Player = playerGrp.GetComponentInChildren<Character>().gameObject;
             LoadData();
 
         }
@@ -100,7 +107,5 @@ public class GameManager : MonoBehaviour
             JsonUtility.FromJsonOverwrite(playerData, Player.GetComponent<Character>().GetCharacterStats());
             Debug.Log("Load Complete!");
         }
-
     }
-
 }

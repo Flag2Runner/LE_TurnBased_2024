@@ -12,9 +12,7 @@ public class CharacterEqupment : MonoBehaviour
         int equipmentIndex = (int)gear.GetEqupmentType();
         if (CurrentEqupment[equipmentIndex] == null)
         {
-            Equipmet oldItem = null;
-
-            oldItem = CurrentEqupment[equipmentIndex];
+            Equipmet oldItem = CurrentEqupment[equipmentIndex];
             UnEqupMods(oldItem);
         }
 
@@ -31,12 +29,11 @@ public class CharacterEqupment : MonoBehaviour
             //FIX THIS
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxMana).AddModifier(gear.MaxManaMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Mana).AddModifier(gear.ManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Intelligence).AddModifier(gear.IntelligenceMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Speed).AddModifier(gear.SpeedMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Defense).AddModifier(gear.DefenseMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Health).AddModifier(gear.HealthMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxHealth).AddModifier(gear.MaxHealthMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).AddModifier(gear.PowerMod);
+            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).RemoveModifier(gear.MaxArmorMod);
+            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).AddModifier(gear.ArmorMod);
             //
         }
     }
@@ -47,12 +44,11 @@ public class CharacterEqupment : MonoBehaviour
             //FIX THIS
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxMana).RemoveModifier(gear.MaxManaMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Mana).RemoveModifier(gear.ManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Intelligence).RemoveModifier(gear.IntelligenceMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Speed).RemoveModifier(gear.SpeedMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Defense).RemoveModifier(gear.DefenseMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Health).RemoveModifier(gear.HealthMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxHealth).RemoveModifier(gear.MaxHealthMod);
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).RemoveModifier(gear.PowerMod);
+            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).RemoveModifier(gear.MaxArmorMod);
+            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Power).RemoveModifier(gear.ArmorMod);
             //
         }
     }

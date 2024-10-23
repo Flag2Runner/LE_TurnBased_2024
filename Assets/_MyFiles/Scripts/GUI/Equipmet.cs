@@ -10,7 +10,7 @@ public class Equipmet : Item
 
     [SerializeField] private EEquipmentType EquipmentType;
     //Fix this
-    public int MaxHealthMod, HealthMod, MaxManaMod, ManaMod, PowerMod, IntelligenceMod, SpeedMod, DefenseMod;
+    public int MaxHealthMod, HealthMod, MaxManaMod, ManaMod, PowerMod, MaxArmorMod, ArmorMod;
 
     public override void Use()
     {
@@ -31,4 +31,4 @@ public class Equipmet : Item
     public EEquipmentType GetEqupmentType() { return EquipmentType; }
 
 }
-public enum EEquipmentType { Head, Chest, MainHand_Weapon, OffHandWeapon, Count }
+public enum EEquipmentType { Armor, Item, Count }
