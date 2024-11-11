@@ -67,6 +67,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     internal int GetModifierValue()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        return 0;
     }
 }

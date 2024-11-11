@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName = "Equipment", menuName = "ScriptableObjects/Equipent")]
 public class Equipmet : Item
