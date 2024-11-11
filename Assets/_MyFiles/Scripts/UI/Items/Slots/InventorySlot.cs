@@ -18,7 +18,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         SwapCheck(draggableItem);
     }
 
-    public void SwapCheck(DraggableItem draggableItem)
+    public virtual void SwapCheck(DraggableItem draggableItem)
     {
         GameObject currentChild = transform.GetChild(0).gameObject;
         DraggableItem childDraggableItem = currentChild.GetComponent<DraggableItem>();

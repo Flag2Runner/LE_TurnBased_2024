@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 955708237960987775}
   - component: {fileID: 1858596503844023320}
-  - component: {fileID: 1122361891403169421}
-  - component: {fileID: 5334569982825301728}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -48,36 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitType: 0
   DiceNumber: 0
-  CharacterInventory: {fileID: 1122361891403169421}
-  CharacterEqupment: {fileID: 5334569982825301728}
---- !u!114 &1122361891403169421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3216338864148412904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1abb533092ede6148824adbab15b66ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventorySpace: 20
-  Items: []
---- !u!114 &5334569982825301728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3216338864148412904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 135785fdea9d86540bb32231eeefb4a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentEqupment:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  CharacterInventory: {fileID: 0}
+  CharacterEqupment: {fileID: 0}

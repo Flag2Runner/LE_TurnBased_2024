@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] private Button rerollButton;
+    [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private ShopSlot[] shopSlots;
     [SerializeField] private GameObject[] itemPool;
 
@@ -16,6 +18,7 @@ public class ShopUI : MonoBehaviour
     private void Start()
     {
         rerollButton.onClick.AddListener(RerollShop);
+        rerollCostText.text = $"{rerollCost}g";
     }
 
     public void SetInventoryList(List<InventorySlot> newSlots) 
@@ -81,12 +84,12 @@ public class ShopUI : MonoBehaviour
 
         if (!playerstatsUI.SpendGold(rerollCost))
         {
+            rerollCostText.text = $"{rerollCost}g";
             Debug.Log("Not enough gold to reroll the shop.");
             return;
         }
 
 
-        Debug.Log($"Rerolled the shop for {rerollCost} gold.");
 
         foreach (ShopSlot slot in shopSlots)
         {
@@ -115,5 +118,23 @@ public class ShopUI : MonoBehaviour
 
         // Increase the reroll cost exponentially (e.g., double the cost each time)
         rerollCost *= 2;
+        rerollCostText.text = $"{rerollCost}g";
     }
+
+    public List<DraggableItem> GetAllShopItems()
+    {
+        List<DraggableItem> shopItems = new List<DraggableItem>();
+
+        // Loop through each shop slot and gather all items
+        foreach (ShopSlot slot in shopSlots)
+        {
+            DraggableItem item = slot.GetComponentInChildren<DraggableItem>();
+
+            if (item != null)
+                shopItems.Add(item);
+        }
+
+        return shopItems;
+    }
+
 }

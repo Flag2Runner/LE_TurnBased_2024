@@ -10,7 +10,7 @@ public class Equipmet : Item
 
     [SerializeField] private EEquipmentType EquipmentType;
     //Fix this
-    public int MaxHealthMod, HealthMod, MaxManaMod, ManaMod, PowerMod, MaxArmorMod, ArmorMod;
+    public int MaxHealthMod, HealthMod, MaxManaMod, ManaMod, AttackMod, MaxArmorMod, ArmorMod;
 
     public override void Use()
     {

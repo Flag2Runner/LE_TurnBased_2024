@@ -19,6 +19,6 @@ MonoBehaviour:
   HealthMod: 0
   MaxManaMod: 0
   ManaMod: 0
-  PowerMod: 5
+  AttackMod: 5
   MaxArmorMod: 0
   ArmorMod: 0

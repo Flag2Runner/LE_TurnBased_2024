@@ -20,8 +20,6 @@ public class BattleManager : MonoBehaviour
     private List<GameObject> EnemyList = new List<GameObject>();
     private int currentWave = 0;
     private int Floor = 1;
-    private UIManager uIManager;
-
     public EBattleState GetBattleState() { return BattleState; }
     public void SetActionType(EActionType actionTypeToSet) { ActionType = actionTypeToSet; }
     public void SetCurrentSelection(GameObject unitToSet) { CurrentSelection = unitToSet; }
@@ -65,8 +63,6 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("Initializing Battle...");
             BattleStarted = true;
-            uIManager = GameManager.m_Instance.GetUIManager();
-
             EnemyList.Clear();
             EnemyList.AddRange(enemyBattleList);
 
@@ -101,8 +97,6 @@ public class BattleManager : MonoBehaviour
         Time.fixedDeltaTime = Time.timeScale;
         yield return new WaitForSeconds(TransitionTime);
 
-        GameManager.Instance.GetPlayer().transform.parent.gameObject.SetActive(false);
-        BattleCamera.AddComponent<Camera>();
 
         SetBattleState(EBattleState.ChooseTurn);
     }
@@ -197,8 +191,9 @@ public class BattleManager : MonoBehaviour
 
     public void ConvertShopItemsToAttack()
     {
+        ShopUI shopUI = GameManager.m_Instance.GetUIManager().GetShopUI().GetComponent<ShopUI>();
         Debug.Log("Converting shop items to attack modifiers...");
-        List<DraggableItem> itemsInShop = uIManager.GetShopUIComponent().GetAllShopItems();
+        List<DraggableItem> itemsInShop = shopUI.GetAllShopItems();
         int totalModifier = 0;
 
         foreach (DraggableItem item in itemsInShop)
@@ -211,8 +206,10 @@ public class BattleManager : MonoBehaviour
         }
 
         CharacterStats playerStats = TurnOrder[0].GetComponent<Character>().GetCharacterStats();
-        playerStats.AddTemporaryAttackModifier(totalModifier);
+        playerStats.AddTemporaryStatsModifier(totalModifier);
         Debug.Log($"Total attack bonus this turn: {totalModifier}");
+
+        Attack();
     }
 
     private IEnumerator BattleWon()
@@ -239,6 +236,12 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(TransitionTime);
 
         // Display defeat UI here
+    }
+
+    internal void Pass()
+    {
+        Debug.Log($"Passing turn");
+        EndTurn();
     }
 }
 

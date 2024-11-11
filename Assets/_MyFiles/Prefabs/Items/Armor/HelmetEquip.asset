@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d39b0de096e91a4c843e804471a4f23, type: 3}
   m_Name: HelmetEquip
   m_EditorClassIdentifier: 
-  EquipmentType: 0
   m_ItemIcon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   EquipmentDescription: This is the base equipment which is a weaopn
   EquipmentType: 0
@@ -20,6 +19,6 @@ MonoBehaviour:
   HealthMod: 0
   MaxManaMod: 0
   ManaMod: 0
-  PowerMod: 5
+  AttackMod: 5
   MaxArmorMod: 0
   ArmorMod: 0

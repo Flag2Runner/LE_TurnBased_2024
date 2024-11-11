@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -62,5 +63,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log("End Drag");
         transform.SetParent(_parentAfterDrag);
         imageComponent.raycastTarget = true;
+    }
+
+    internal int GetModifierValue()
+    {
+        throw new NotImplementedException();
     }
 }

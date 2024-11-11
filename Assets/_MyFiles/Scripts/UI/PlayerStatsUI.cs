@@ -10,7 +10,7 @@ public class PlayerStatsUI : MonoBehaviour
 
     private int health = 100;
     private int armor = 50;
-    private int gold = 10;
+    [SerializeField] private int gold = 100;
 
     private void Start()
     {

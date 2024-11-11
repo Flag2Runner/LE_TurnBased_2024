@@ -3,12 +3,24 @@ using UnityEngine.EventSystems;
 
 public class ArmorSlot : InventorySlot
 {
-    [SerializeField] private EEquipmentType eEquipmentType = EEquipmentType.Helmet;
+    [SerializeField] private EEquipmentType eEquipmentType;
     public override void OnDrop(PointerEventData eventData)
     {
-        if (transform.GetChild(0).GetComponent<DraggableItem>().GetItemType() == eEquipmentType)
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+        if (transform.childCount == 1)
         {
-            base.OnDrop(eventData);
+            if (transform.GetChild(0).GetComponent<DraggableItem>().GetItemType() == eEquipmentType)
+            {
+                SwapCheck(draggableItem);
+            }
         }
+
+
+        if (draggableItem != null) { return; }
+        if(draggableItem.GetItemType() == eEquipmentType && transform.childCount == 0)
+            base.OnDrop(eventData);
+
+        
     }
 }

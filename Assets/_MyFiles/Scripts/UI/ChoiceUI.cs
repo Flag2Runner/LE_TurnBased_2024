@@ -29,7 +29,7 @@ public class ChoiceUI : MonoBehaviour
 
     private void PassTurn()
     {
-        GameManager.Instance.EndTurnManager();
+        GameManager.Instance.GetBattleManager()?.Pass();
     }
 
     private void ConvertShopItemsToAttack()

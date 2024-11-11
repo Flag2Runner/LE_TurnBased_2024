@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -76,6 +77,23 @@ public class CharacterStats : MonoBehaviour
         }
         return null;
     }
+
+    internal int GetAttackDamage()
+    {
+        Debug.Log($"Get Attack Damage");
+        return GetStat(EStatType.Attack).GetValue();
+    }
+
+    internal void RegenArmor(int v)
+    {
+        Debug.Log($"Regen Armor");
+    }
+
+    internal void AddTemporaryStatsModifier(int totalModifier)
+    {
+        Debug.Log($"Add Temp Stats");
+
+    }
 }
 
-public enum EStatType { MaxHealth, Health, MaxMana, Mana, Power, Intelligence, Speed, Defense, COUNT }
+public enum EStatType { MaxHealth, Health, MaxMana, Mana, Attack, Armor, MaxArmor, COUNT }
