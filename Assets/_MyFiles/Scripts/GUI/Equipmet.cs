@@ -17,7 +17,7 @@ public class Equipmet : Item
         base.Use();
 
         //put the item on
-        GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharEqquipment().Equip(this);
+        GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterEquipment().Equip(this);
 
         RemoveItem();
 

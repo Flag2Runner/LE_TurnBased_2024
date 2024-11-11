@@ -15,6 +15,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
 
+        if (draggableItem.GetIsInShop() == true) { return; }
         SwapCheck(draggableItem);
     }
 

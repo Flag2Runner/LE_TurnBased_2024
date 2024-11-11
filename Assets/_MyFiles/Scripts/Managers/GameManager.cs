@@ -72,10 +72,12 @@ public class GameManager : MonoBehaviour
         if (CurrentBattle == null)
         {
             CreateBattleManager();
+            currentWaveIndex = 1;
+            m_Instance.GetUIManager().GetPlayerStatsUI().UpdateWaveText(currentWaveIndex);
         }
     }
 
-    private void CreateBattleManager()
+    public void CreateBattleManager()
     {
         if (battleManagerPrefab == null)
         {
@@ -85,10 +87,11 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Instantiating BattleManager...");
         CurrentBattle = Instantiate(battleManagerPrefab, transform.position, Quaternion.identity);
-        CurrentBattle.InitializeBattle(GetNextWave());
 
-        // Delay updating wave text slightly to ensure UI is initialized
-        Invoke(nameof(UpdateWaveText), 0.1f);
+        // Pass the player and the wave to InitializeBattle
+        CurrentBattle.InitializeBattle(Player, GetNextWave());
+
+        UpdateWaveText();
     }
 
 

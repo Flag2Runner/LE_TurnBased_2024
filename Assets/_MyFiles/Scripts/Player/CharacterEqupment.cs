@@ -1,64 +1,59 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterEqupment : MonoBehaviour
+public class CharacterEquipment : MonoBehaviour
 {
-    [SerializeField] Equipmet[] CurrentEqupment = new Equipmet[System.Enum.GetNames(typeof(EEquipmentType)).Length];
+    [SerializeField] Equipmet[] equippedItems = new Equipmet[System.Enum.GetNames(typeof(EEquipmentType)).Length];
+    private CharacterStats characterStats;
+
+    private void Awake()
+    {
+        characterStats = GetComponent<Character>().GetCharacterStats();
+    }
 
     public void Equip(Equipmet gear)
     {
         int equipmentIndex = (int)gear.GetEqupmentType();
-        if (CurrentEqupment[equipmentIndex] == null)
+        Equipmet oldItem = equippedItems[equipmentIndex];
+
+        if (oldItem != null)
         {
-            Equipmet oldItem = CurrentEqupment[equipmentIndex];
-            UnEqupMods(oldItem);
+            UnEquipModifiers(oldItem);
         }
 
-        CurrentEqupment[equipmentIndex] = gear;
-
-        EqupMods(gear);
+        equippedItems[equipmentIndex] = gear;
+        ApplyModifiers(gear);
     }
 
-
-    private void EqupMods(Equipmet gear)
-    {
-        foreach (var item in CurrentEqupment)
-        {
-            //FIX THIS
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxMana).AddModifier(gear.MaxManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Mana).AddModifier(gear.ManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Health).AddModifier(gear.HealthMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxHealth).AddModifier(gear.MaxHealthMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Attack).AddModifier(gear.AttackMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxArmor).RemoveModifier(gear.MaxArmorMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Armor).AddModifier(gear.ArmorMod);
-            //
-        }
-    }
-    private void UnEqupMods(Equipmet gear)
-    {
-        foreach (var item in CurrentEqupment)
-        {
-            //FIX THIS
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxMana).RemoveModifier(gear.MaxManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Mana).RemoveModifier(gear.ManaMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Health).RemoveModifier(gear.HealthMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxHealth).RemoveModifier(gear.MaxHealthMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Attack).RemoveModifier(gear.AttackMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.MaxArmor).RemoveModifier(gear.MaxArmorMod);
-            GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetCharacterStats().GetStat(EStatType.Armor).RemoveModifier(gear.ArmorMod);
-            //
-        }
-    }
     public void UnEquip(int equipmentIndex)
     {
-        if (CurrentEqupment[equipmentIndex])
+        if (equippedItems[equipmentIndex] != null)
         {
-            Equipmet oldItem = CurrentEqupment[equipmentIndex];
+            Equipmet oldItem = equippedItems[equipmentIndex];
             GameManager.m_Instance.GetPlayer().GetComponent<Character>().GetInventory().AddItem(oldItem);
-            CurrentEqupment[equipmentIndex] = null;
+            UnEquipModifiers(oldItem);
+            equippedItems[equipmentIndex] = null;
         }
+    }
+
+    private void ApplyModifiers(Equipmet gear)
+    {
+        characterStats.GetStat(EStatType.MaxHealth).AddModifier(gear.MaxHealthMod);
+        characterStats.GetStat(EStatType.Health).AddModifier(gear.HealthMod);
+        characterStats.GetStat(EStatType.MaxMana).AddModifier(gear.MaxManaMod);
+        characterStats.GetStat(EStatType.Mana).AddModifier(gear.ManaMod);
+        characterStats.GetStat(EStatType.Attack).AddModifier(gear.AttackMod);
+        characterStats.GetStat(EStatType.MaxArmor).AddModifier(gear.MaxArmorMod);
+        characterStats.GetStat(EStatType.Armor).AddModifier(gear.ArmorMod);
+    }
+
+    private void UnEquipModifiers(Equipmet gear)
+    {
+        characterStats.GetStat(EStatType.MaxHealth).RemoveModifier(gear.MaxHealthMod);
+        characterStats.GetStat(EStatType.Health).RemoveModifier(gear.HealthMod);
+        characterStats.GetStat(EStatType.MaxMana).RemoveModifier(gear.MaxManaMod);
+        characterStats.GetStat(EStatType.Mana).RemoveModifier(gear.ManaMod);
+        characterStats.GetStat(EStatType.Attack).RemoveModifier(gear.AttackMod);
+        characterStats.GetStat(EStatType.MaxArmor).RemoveModifier(gear.MaxArmorMod);
+        characterStats.GetStat(EStatType.Armor).RemoveModifier(gear.ArmorMod);
     }
 }

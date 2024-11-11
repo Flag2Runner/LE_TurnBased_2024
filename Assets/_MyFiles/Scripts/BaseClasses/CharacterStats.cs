@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +5,9 @@ public class CharacterStats : MonoBehaviour
 {
     [SerializeField] private string CharacterName;
     [SerializeField] private string CharacterDescription;
-
     [SerializeField] private List<Stat> StatList = new List<Stat>();
+
+    private Dictionary<EStatType, int> temporaryModifiers = new Dictionary<EStatType, int>();
 
     private void Awake()
     {
@@ -29,48 +29,30 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public int GetMaxHealth()
-    {
-        Stat maxHealthStat = GetStat(EStatType.MaxHealth);
-        return maxHealthStat != null ? maxHealthStat.GetValue() : 0;
-    }
+    public int GetMaxHealth() => GetStat(EStatType.MaxHealth)?.GetValue() ?? 0;
+    public int GetCurrentHealth() => GetStat(EStatType.Health)?.GetValue() ?? 0;
 
-    public int GetCurrentHealth()
-    {
-        Stat healthStat = GetStat(EStatType.Health);
-        return healthStat != null ? healthStat.GetValue() : 0;
-    }
-
-    public void Attack(int damage)
+    public void UpdateHealth(int delta)
     {
         Stat healthStat = GetStat(EStatType.Health);
         if (healthStat != null)
         {
-            // Reduce health by the specified amount
-            healthStat.ModifyValue(-damage);
+            healthStat.ModifyValue(delta);
+            healthStat.SetRawValue(Mathf.Clamp(healthStat.GetValue(), 0, GetMaxHealth()));
 
-            // Ensure health doesn't go below zero
-            healthStat.SetRawValue(Mathf.Max(0, healthStat.GetValue()));
-        }
-    }
-
-    public void Heal(CharacterStats target, int amount)
-    {
-        Stat healthStat = target.GetStat(EStatType.Health);
-        if (healthStat != null)
-        {
-            // Increase health of the target by the specified amount, up to the maximum
-            healthStat.ModifyValue(amount);
-            healthStat.SetRawValue(Mathf.Min(healthStat.GetValue(), target.GetMaxHealth()));
+            HealthComponent healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent != null)
+            {
+                healthComponent.ChangeHealth(delta, gameObject);
+            }
         }
     }
 
     public Stat GetStat(EStatType statToGet)
     {
-        string nameToGet = statToGet.ToString();
         foreach (Stat stat in StatList)
         {
-            if (stat.GetStatName() == nameToGet)
+            if (stat.GetStatName() == statToGet.ToString())
             {
                 return stat;
             }
@@ -78,21 +60,51 @@ public class CharacterStats : MonoBehaviour
         return null;
     }
 
-    internal int GetAttackDamage()
+    // New Methods to Implement GetAttackDamage, GetCurrentArmor, and RegenArmor
+    public int GetAttackDamage()
     {
-        Debug.Log($"Get Attack Damage");
-        return GetStat(EStatType.Attack).GetValue();
+        return GetStat(EStatType.Attack)?.GetValue() ?? 0;
     }
 
-    internal void RegenArmor(int v)
+    public int GetCurrentArmor()
     {
-        Debug.Log($"Regen Armor");
+        return GetStat(EStatType.Armor)?.GetValue() ?? 0;
     }
 
-    internal void AddTemporaryStatsModifier(int totalModifier)
+    public void RegenArmor(int amount)
     {
-        Debug.Log($"Add Temp Stats");
+        Stat armorStat = GetStat(EStatType.Armor);
+        if (armorStat != null)
+        {
+            armorStat.ModifyValue(amount);
+            armorStat.SetRawValue(Mathf.Max(0, armorStat.GetValue())); // Armor can't be negative
+        }
+    }
 
+    public void AddTemporaryStatsModifier(int amount, EStatType statType)
+    {
+        Stat stat = GetStat(statType);
+        if (stat != null)
+        {
+            if (!temporaryModifiers.ContainsKey(statType))
+                temporaryModifiers[statType] = 0;
+
+            temporaryModifiers[statType] += amount;
+            stat.ModifyValue(amount);
+        }
+    }
+
+    public void RemoveTemporaryStatsModifier(EStatType statType)
+    {
+        if (temporaryModifiers.ContainsKey(statType))
+        {
+            Stat stat = GetStat(statType);
+            if (stat != null)
+            {
+                stat.ModifyValue(-temporaryModifiers[statType]);
+                temporaryModifiers[statType] = 0;
+            }
+        }
     }
 }
 

@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour, IPointerClickHandler
     {
         if (GameManager.m_Instance.GetBattleManager().GetBattleState() == EBattleState.PlayerTurn)
         {
-            GameManager.m_Instance.GetBattleManager().SelectEnemy(this);
+            //GameManager.m_Instance.GetBattleManager().SelectEnemy(this);
         }
         else
         {

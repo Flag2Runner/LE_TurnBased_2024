@@ -148,3 +148,4 @@ MonoBehaviour:
   - {fileID: 7957170772393034327}
   - {fileID: 1288809923896270296}
   - {fileID: 8620394918402570478}
+  selectionIndicatorPrefab: {fileID: 4827151196534437076, guid: c869ebc2f3f5ef24c807fd2da27c5018, type: 3}

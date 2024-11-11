@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryComponent : MonoBehaviour
 {
-    [Range(1, 20)][SerializeField] private int inventorySpace;
-
+    [Range(1, 20)]
+    [SerializeField] private int inventorySpace;
     [SerializeField] private List<Item> items = new List<Item>();
-    [SerializeField] private List<InventorySlot> inventorySlots = new();
+    [SerializeField] private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
     private void Awake()
     {
@@ -16,10 +14,10 @@ public class InventoryComponent : MonoBehaviour
         inventorySlots.AddRange(slots);
     }
 
-    public int GetInventorySpace() { return inventorySpace; }
+    public int GetInventorySpace() => inventorySpace;
+    public void SetInventorySpace(int spaceToSet) => inventorySpace = spaceToSet;
+    public List<Item> GetItemList() => items;
 
-    public void SetInventorySpace(int spaceToSet) { inventorySpace = spaceToSet; }
-    public List<Item> GetItemList() { return items; }
     public bool AddItem(Item itemToAdd)
     {
         if (itemToAdd != null && items.Count < inventorySpace)
@@ -28,28 +26,19 @@ public class InventoryComponent : MonoBehaviour
             GameManager.m_Instance.GetUIManager().UpdateUI(items);
             return true;
         }
-        else
-        {
-            Debug.Log("Inventory Full!");
-            return false;
-        }
+        Debug.Log("Inventory Full!");
+        return false;
     }
 
     public void RemoveItem(Item itemToRemove)
     {
-        Debug.Log("Removing Item...");
-        if (itemToRemove != null)
+        if (itemToRemove != null && items.Contains(itemToRemove))
         {
             items.Remove(itemToRemove);
             GameManager.m_Instance.GetUIManager().UpdateUI(items);
-
         }
-        else { Debug.Log("Item Removed!"); }
     }
-    public void ClearInventory() { items.Clear(); }
 
-    internal List<InventorySlot> GetInventoryList()
-    {
-        return inventorySlots;
-    }
+    public void ClearInventory() => items.Clear();
+    internal List<InventorySlot> GetInventoryList() => inventorySlots;
 }

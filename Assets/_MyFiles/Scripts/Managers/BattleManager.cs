@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Linq;
 
 public class BattleManager : MonoBehaviour
@@ -10,11 +11,17 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private EBattleState BattleState = EBattleState.Wait;
     [SerializeField] private float TransitionTime = 1.5f;
 
-    [SerializeField] private Transform[] rowTransforms; // Array for modular row transforms
+    [SerializeField] private Transform[] rowTransforms;
+    [SerializeField] private GameObject selectionIndicatorPrefab;
 
+    private GameObject player;
     private List<GameObject> EnemyList = new List<GameObject>();
     private int EnemyDead = 0;
     private int PlayerDead = 0;
+    private Character selectedEnemy;
+    private GameObject selectionIndicator;
+    private int selectedRow = 0;
+    private int selectedIndex = 0;
 
     private ChoiceUI choiceUI;
 
@@ -22,17 +29,69 @@ public class BattleManager : MonoBehaviour
     {
         choiceUI = GameManager.m_Instance.GetUIManager().GetComponentInChildren<ChoiceUI>();
         if (choiceUI != null) choiceUI.DisableAllButtons(); // Start with buttons disabled
+
+        // Instantiate the selection indicator and hide it initially
+        if (selectionIndicatorPrefab != null)
+        {
+            selectionIndicator = Instantiate(selectionIndicatorPrefab, transform);
+            selectionIndicator.SetActive(false);
+        }
     }
 
-    public void InitializeBattle(Wave wave)
+    private void Update()
+    {
+        if (BattleState == EBattleState.PlayerTurn)
+        {
+            HandleKeyboardInput();
+        }
+    }
+
+    private void HandleKeyboardInput()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveSelection(1); // Move selection right
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveSelection(-1); // Move selection left
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && selectedEnemy != null)
+        {
+            SelectEnemy(selectedEnemy); // Confirm selection
+            
+        }
+    }
+
+    private void MoveSelection(int direction)
+    {
+        int rowCount = rowTransforms.Length;
+        Transform currentRow = rowTransforms[selectedRow];
+        int enemyCount = currentRow.childCount;
+
+        // Update the selected index within bounds, wrapping around if necessary
+        selectedIndex = (selectedIndex + direction + enemyCount) % enemyCount;
+        Transform selectedTransform = currentRow.GetChild(selectedIndex);
+
+        // Update the selected enemy and move the selection indicator
+        selectedEnemy = selectedTransform.GetComponent<Character>();
+        if (selectionIndicator != null)
+        {
+            selectionIndicator.SetActive(true);
+            StartCoroutine(LerpIndicatorPosition(selectedTransform.position));
+        }
+    }
+
+    public void InitializeBattle(GameObject playerCharacter, Wave wave)
     {
         if (!BattleStarted)
         {
             Debug.Log("Initializing Battle...");
             BattleStarted = true;
 
-            SpawnWave(wave);
+            player = playerCharacter;
 
+            SpawnWave(wave);
             GatherUnits();
             OrderByDiceRoll();
 
@@ -40,15 +99,48 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SelectEnemy(Enemy enemy)
+    public void SelectEnemy(Character enemy)
     {
-        if (enemy == null || BattleState != EBattleState.PlayerTurn)
+        if (BattleState != EBattleState.PlayerTurn)
         {
-            Debug.LogWarning("Cannot select enemy at this time.");
+            Debug.LogWarning("Cannot select enemy during the enemy's turn.");
             return;
         }
 
-        Debug.Log($"Enemy {enemy.EnemyType} selected.");
+        if (enemy == null || enemy.GetUnitType() == EUnitType.Player)
+        {
+            Debug.LogWarning("No enemy selected.");
+            return;
+        }
+
+        selectedEnemy = enemy;
+        Debug.Log($"Selected Enemy: {enemy.GetUnitType()}");
+        HighlightEnemy(enemy);
+    }
+
+    private void HighlightEnemy(Character enemy)
+    {
+        if (selectionIndicator != null)
+        {
+            selectionIndicator.SetActive(true);
+            StartCoroutine(LerpIndicatorPosition(enemy.transform.position));
+        }
+    }
+
+    private IEnumerator LerpIndicatorPosition(Vector3 targetPosition)
+    {
+        float duration = 0.3f;
+        Vector3 startPosition = selectionIndicator.transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            selectionIndicator.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        selectionIndicator.transform.position = targetPosition;
     }
 
     private void SpawnWave(Wave wave)
@@ -75,7 +167,7 @@ public class BattleManager : MonoBehaviour
             GameObject enemyObject = Instantiate(enemies[i], rowTransform);
             enemyObject.transform.localPosition = new Vector3(i * spacing, 0, 0);
 
-            Enemy enemyComponent = enemyObject.GetComponent<Enemy>();
+            Character enemyComponent = enemyObject.GetComponent<Character>();
             if (enemyComponent != null)
             {
                 EnemyList.Add(enemyObject);
@@ -85,6 +177,11 @@ public class BattleManager : MonoBehaviour
 
     private void GatherUnits()
     {
+        if (player != null)
+        {
+            TurnOrder.Add(player);
+        }
+
         foreach (GameObject unit in EnemyList)
         {
             TurnOrder.Add(unit);
@@ -118,10 +215,10 @@ public class BattleManager : MonoBehaviour
                 ChooseTurn();
                 break;
             case EBattleState.PlayerTurn:
-                choiceUI.EnableAllButtons(); // Enable UI for player interaction
+                choiceUI.EnableAllButtons();
                 break;
             case EBattleState.EnemyTurn:
-                choiceUI.DisableAllButtons(); // Disable UI during enemy turn
+                choiceUI.DisableAllButtons();
                 if (TurnOrder.Count > 0)
                     StartCoroutine(EnemyTurn());
                 else
@@ -136,7 +233,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public EBattleState GetBattleState() { return BattleState; }
+
+
+public EBattleState GetBattleState() { return BattleState; }
 
     private IEnumerator BattleStart()
     {
@@ -166,25 +265,58 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void PlayerTurn()
-    {
-        if (TurnOrder[0].GetComponent<Character>().GetCharacterStats().GetCurrentHealth() <= 0)
-            EndTurn();
-    }
-
     private IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f); // Wait a bit for clarity between actions
+
+        // Retrieve the enemy's character stats
+        CharacterStats enemyStats = TurnOrder[0].GetComponent<Character>().GetCharacterStats();
+
+        // Choose a random action for the enemy
+        int actionChoice = Random.Range(0, 3); // 0 = Attack, 1 = Guard, 2 = Pass
+
+        switch (actionChoice)
+        {
+            case 0: // Attack
+                Debug.Log("Enemy chooses to attack!");
+
+                // Select a random target (in this case, it will be the player character)
+                CharacterStats playerStats = TurnOrder.First(unit => unit.GetComponent<Character>().GetUnitType() == EUnitType.Player).GetComponent<Character>().GetCharacterStats();
+
+                // Deal damage to the player, considering armor first
+                int damage = enemyStats.GetAttackDamage();
+                int leftoverDamage = Mathf.Max(0, damage - playerStats.GetCurrentArmor());
+
+                playerStats.RegenArmor(-damage); // Deduct armor first
+                if (leftoverDamage > 0)
+                {
+                    GameManager.m_Instance.GetPlayer().GetComponent<Character>().TakeDamage(leftoverDamage); // Apply leftover damage to health
+                }
+                Debug.Log($"Enemy dealt {damage} damage. Leftover health damage: {leftoverDamage}");
+                break;
+
+            case 1: // Guard
+                Debug.Log("Enemy chooses to guard.");
+                enemyStats.RegenArmor(5); // Guard restores armor by a fixed amount (customize as needed)
+                break;
+
+            case 2: // Pass
+                Debug.Log("Enemy chooses to pass their turn.");
+                break;
+        }
+
+        // End the enemy's turn after the chosen action
+        yield return new WaitForSeconds(1f); // Add a delay for readability in turn transitions
         EndTurn();
     }
 
     public void Attack(bool endTurnAfterAttack = true)
     {
-        if (BattleState != EBattleState.PlayerTurn) return;
+        if (BattleState != EBattleState.PlayerTurn || selectedEnemy == null) return;
 
         Debug.Log("Player Attack!");
 
-        // Attack logic here, e.g., targeting a selected enemy
+        selectedEnemy.TakeDamage(TurnOrder[0].GetComponent<Character>().GetCharacterStats().GetAttackDamage());
 
         if (endTurnAfterAttack)
         {
@@ -217,34 +349,28 @@ public class BattleManager : MonoBehaviour
 
         Debug.Log("Converting Shop Items to Attack Power");
 
-        // Get the shop UI and initialize total attack modifier
         ShopUI shopUI = GameManager.m_Instance.GetUIManager().GetShopUI().GetComponent<ShopUI>();
         int totalAttackModifier = 0;
 
-        // Gather all shop items and sum their modifier values, then destroy them
         foreach (DraggableItem item in shopUI.GetAllShopItems())
         {
             totalAttackModifier += item.GetModifierValue();
-            Destroy(item.gameObject); // Remove the item after converting
+            Destroy(item.gameObject);
         }
 
-        // Apply the modifier temporarily
         CharacterStats playerStats = TurnOrder[0].GetComponent<Character>().GetCharacterStats();
-        playerStats.AddTemporaryStatsModifier(totalAttackModifier);
+        playerStats.AddTemporaryStatsModifier(totalAttackModifier, EStatType.Attack);
 
         Debug.Log($"Total Attack Bonus this turn: {totalAttackModifier}");
 
-        // Perform the attack with the added modifier, but don't end the turn yet
         Attack(false);
 
         // Remove the temporary modifier after the attack
-        playerStats.AddTemporaryStatsModifier(-totalAttackModifier);
+        playerStats.RemoveTemporaryStatsModifier(EStatType.Attack);
 
-        Debug.Log("Temporary attack modifier removed.");
-
-        // End the player's turn
         EndTurn();
     }
+
 
     private IEnumerator BattleWon()
     {

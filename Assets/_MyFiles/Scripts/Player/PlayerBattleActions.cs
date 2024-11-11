@@ -9,7 +9,7 @@ public class PlayerBattleActions : MonoBehaviour, IBattleActions
 
     public void Gaurd()
     {
-        throw new System.NotImplementedException();
+        Debug.Log($"{this.name} Regens Amour");
     }
 
     public void Heal()
