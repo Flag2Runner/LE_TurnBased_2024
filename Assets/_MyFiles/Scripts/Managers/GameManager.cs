@@ -1,36 +1,36 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public class Wave 
+public class Wave
 {
-    [SerializeField] private GameObject[] enemys;
+    public GameObject[] row1Prefabs;
+    public GameObject[] row2Prefabs;
+    public GameObject[] row3Prefabs;
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager m_Instance;
 
-    public static GameManager Instance
-    {
-        get;
-        private set;
-    }
-    
     [Header("Player Info")]
-    [SerializeField] GameObject PlayerPrefab;
-    [SerializeField] Transform PlayerSpawn;
+    [SerializeField] private GameObject PlayerPrefab;
+    [SerializeField] private Transform PlayerSpawn;
     private GameObject Player;
-    [Header("Wave Data")]
-    [SerializeField] Wave[] Waves;
-    [Header("UI")]
-    [SerializeField] private UIManager UIManager;
-    [SerializeField] GameObject InventorySlotUI;
 
-    [Header("Managers [READ ONLY]")]
-    [SerializeField] private BattleManager CurrentBattle;
+    [Header("Wave Data")]
+    [SerializeField] private Wave[] Waves;
+
+    [Header("UI")]
+    [SerializeField] private GameObject UIManager;
+    [SerializeField] private GameObject InventorySlotUI;
+
+    [Header("Battle Manager")]
+    [SerializeField] private BattleManager battleManagerPrefab; // Reference to the BattleManager prefab
+    private BattleManager CurrentBattle;
+
+    private int currentWaveIndex = 0;
 
     private void Awake()
     {
@@ -46,52 +46,123 @@ public class GameManager : MonoBehaviour
 
         if (PlayerPrefab && PlayerSpawn)
         {
-            //Spawning Player
-            GameObject playerGrp = Instantiate(PlayerPrefab, PlayerSpawn.transform.position, PlayerSpawn.transform.rotation);
+            GameObject playerGrp = Instantiate(PlayerPrefab, PlayerSpawn.position, PlayerSpawn.rotation);
             Player = playerGrp.GetComponentInChildren<Character>().gameObject;
             LoadData();
-
         }
         else
         {
-            Debug.LogWarning("Player Prefab or PlayerSpawn not Referanced");
+            Debug.LogWarning("Player Prefab or PlayerSpawn not Referenced");
         }
+        StartBattle();
     }
-    public GameObject GetPlayer() { return Player; }
+
+    public GameObject GetPlayer() => Player;
 
     public void DestroyInventoryUIManager()
     {
         Destroy(UIManager);
         UIManager = null;
     }
-    public UIManager GetUIManager() { return UIManager; }
-    public void CreateBattleManager(List<GameObject> enemyBattleList)
+
+    public UIManager GetUIManager() => UIManager.GetComponent<UIManager>();
+
+    public void StartBattle()
     {
-        if (CurrentBattle) { return; }
-
-
-        Debug.Log("Creating BattleManager...");
-        CurrentBattle = gameObject.AddComponent<BattleManager>();
-        CurrentBattle.InitializeBattle(enemyBattleList);
-
+        if (CurrentBattle == null)
+        {
+            CreateBattleManager();
+        }
     }
+
+    private void CreateBattleManager()
+    {
+        if (battleManagerPrefab == null)
+        {
+            Debug.LogError("BattleManager prefab is not assigned in the GameManager.");
+            return;
+        }
+
+        Debug.Log("Instantiating BattleManager...");
+        CurrentBattle = Instantiate(battleManagerPrefab, transform.position, Quaternion.identity);
+        CurrentBattle.InitializeBattle(GetNextWave());
+
+        // Delay updating wave text slightly to ensure UI is initialized
+        Invoke(nameof(UpdateWaveText), 0.1f);
+    }
+
+
     public void DestroyBattleManager()
     {
-        Destroy(CurrentBattle);
-        CurrentBattle = null;
-    } 
-    public void EndTurnManager()
-    {
-        CurrentBattle.EndTurn();
+        if (CurrentBattle != null)
+        {
+            Destroy(CurrentBattle.gameObject);
+            CurrentBattle = null;
+        }
+
+        // After destroying, start the next wave after a delay
+        Invoke(nameof(StartBattle), 2f); // Delay before starting the next wave
     }
-    public BattleManager GetBattleManager() { return CurrentBattle; }
+
+    public BattleManager GetBattleManager() => CurrentBattle;
+
+    public Wave GetNextWave()
+    {
+        if (currentWaveIndex < Waves.Length)
+        {
+            return Waves[currentWaveIndex++];
+        }
+        else
+        {
+            return GenerateRandomWave();
+        }
+    }
+
+    private Wave GenerateRandomWave()
+    {
+        Wave randomWave = new Wave();
+        randomWave.row1Prefabs = GenerateRandomEnemyRow(3);
+        randomWave.row2Prefabs = GenerateRandomEnemyRow(3);
+        randomWave.row3Prefabs = GenerateRandomEnemyRow(3);
+        return randomWave;
+    }
+
+    private GameObject[] GenerateRandomEnemyRow(int count)
+    {
+        GameObject[] enemyRow = new GameObject[count];
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, Waves[currentWaveIndex].row1Prefabs.Length);
+            enemyRow[i] = Waves[currentWaveIndex].row1Prefabs[randomIndex];
+        }
+        return enemyRow;
+    }
+
+    public void UpdateWaveText()
+    {
+        if (UIManager == null)
+        {
+            Debug.LogWarning("UIManager is not assigned.");
+            return;
+        }
+
+        var playerStatsUI = m_Instance.GetUIManager().GetPlayerStatsUI();
+        if (playerStatsUI == null)
+        {
+            Debug.LogWarning("PlayerStatsUI is not found in UIManager.");
+            return;
+        }
+
+        playerStatsUI.UpdateWaveText(currentWaveIndex + 1);
+    }
+
 
     public void SaveData()
     {
         Debug.Log("Saving Data...");
         string playerData = JsonUtility.ToJson(Player.GetComponent<Character>().GetCharacterStats());
         string filePath = Application.persistentDataPath + "/PlayerData.Json";
-        Debug.Log(filePath);
+        System.IO.File.WriteAllText(filePath, playerData);
         Debug.Log("Save Complete!");
     }
 

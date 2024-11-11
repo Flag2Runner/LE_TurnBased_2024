@@ -7,6 +7,7 @@ public class PlayerStatsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI armorText;
     [SerializeField] private TextMeshProUGUI goldText;
+    [SerializeField] private TextMeshProUGUI waveText; // New field for wave text
 
     private int health = 100;
     private int armor = 50;
@@ -60,5 +61,16 @@ public class PlayerStatsUI : MonoBehaviour
         }
         Debug.Log("Not enough gold!");
         return false;
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+    }
+
+    //function to update wave text
+    public void UpdateWaveText(int waveNumber)
+    {
+        waveText.text = $"Wave : {waveNumber}";
     }
 }

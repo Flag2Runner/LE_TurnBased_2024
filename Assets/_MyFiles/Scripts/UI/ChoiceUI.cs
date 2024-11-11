@@ -10,7 +10,6 @@ public class ChoiceUI : MonoBehaviour
 
     private void Start()
     {
-        // Assign the button listeners to the GameManager's methods
         if (attackButton != null) attackButton.onClick.AddListener(Attack);
         if (guardButton != null) guardButton.onClick.AddListener(Guard);
         if (passTurnButton != null) passTurnButton.onClick.AddListener(PassTurn);
@@ -19,22 +18,37 @@ public class ChoiceUI : MonoBehaviour
 
     private void Attack()
     {
-        GameManager.Instance.GetBattleManager()?.Attack();
+        GameManager.m_Instance.GetBattleManager()?.Attack(true);
     }
 
     private void Guard()
     {
-        GameManager.Instance.GetBattleManager()?.Guard();
+        GameManager.m_Instance.GetBattleManager()?.Guard();
     }
 
     private void PassTurn()
     {
-        GameManager.Instance.GetBattleManager()?.Pass();
+        GameManager.m_Instance.GetBattleManager()?.Pass();
     }
 
     private void ConvertShopItemsToAttack()
     {
-        // Ensure that the BattleManager exists before calling this
-        GameManager.Instance.GetBattleManager()?.ConvertShopItemsToAttack();
+        GameManager.m_Instance.GetBattleManager()?.ConvertShopItemsToAttack();
+    }
+
+    public void EnableAllButtons()
+    {
+        attackButton.interactable = true;
+        guardButton.interactable = true;
+        passTurnButton.interactable = true;
+        convertShopItemsButton.interactable = true;
+    }
+
+    public void DisableAllButtons()
+    {
+        attackButton.interactable = false;
+        guardButton.interactable = false;
+        passTurnButton.interactable = false;
+        convertShopItemsButton.interactable = false;
     }
 }

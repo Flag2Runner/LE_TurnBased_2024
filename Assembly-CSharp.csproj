@@ -88,6 +88,7 @@
     <Compile Include="Assets\_MyFiles\Scripts\BaseClasses\Character.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\UI\Items\Slots\ShopSlot.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\UI\ChoiceUI.cs" />
+    <Compile Include="Assets\_MyFiles\Scripts\Enemy\Enemy.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\ValueGauge\StatusGauge.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\UI\Widgets\ValueGauge\ValueGauge.cs" />
     <Compile Include="Assets\_MyFiles\Scripts\Player\CharacterEqupment.cs" />

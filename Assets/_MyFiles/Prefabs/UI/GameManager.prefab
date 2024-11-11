@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &679843436369277647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3828025613199731019}
+  - component: {fileID: 185089839688590637}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3828025613199731019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679843436369277647}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.67782, y: 3.7464628, z: 7.558732}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 444293253604972944}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &185089839688590637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679843436369277647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb382587d4147a45b340db8e4f42e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 3216338864148412904, guid: ea34909c5eb8d0c4aaf2b2bc74d90cfe, type: 3}
+  PlayerSpawn: {fileID: 444293253604972944}
+  Waves:
+  - row1Prefabs:
+    - {fileID: 7526620538210316320, guid: 831fd056b68b7af4da937ea4099b56aa, type: 3}
+    row2Prefabs:
+    - {fileID: 7526620538210316320, guid: 831fd056b68b7af4da937ea4099b56aa, type: 3}
+    - {fileID: 7526620538210316320, guid: 831fd056b68b7af4da937ea4099b56aa, type: 3}
+    row3Prefabs:
+    - {fileID: 7526620538210316320, guid: 831fd056b68b7af4da937ea4099b56aa, type: 3}
+  UIManager: {fileID: 6712470007318244914, guid: e7650e359b71137469a21b01f9615d2d, type: 3}
+  InventorySlotUI: {fileID: 4379400861373936374, guid: e1f41998862b4964392fd2d009aadd5c, type: 3}
+  battleManagerPrefab: {fileID: 1165909758726169417, guid: 3d00865426f1c2044928c16bc4d4424e, type: 3}
+--- !u!1 &4113497350206653398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 444293253604972944}
+  m_Layer: 0
+  m_Name: PlayerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &444293253604972944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113497350206653398}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.67782, y: -3.7464628, z: -7.558732}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3828025613199731019}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
