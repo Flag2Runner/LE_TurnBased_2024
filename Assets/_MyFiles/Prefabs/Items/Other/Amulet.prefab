@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6440866808876168032}
   - component: {fileID: 3916030830334128314}
   m_Layer: 5
-  m_Name: Item
+  m_Name: Amulet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -88,4 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4651bbbcaad7ece4aa5584de3981ef29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageComponent: {fileID: 6440866808876168032}
+  imageItem: {fileID: 21300000, guid: 0e123cfdc54a3ca4684816a34167a566, type: 3}
+  equipmentData: {fileID: 11400000, guid: 63e99a45f694acf4fb53c3d30130ece9, type: 2}
+  isInShop: 1

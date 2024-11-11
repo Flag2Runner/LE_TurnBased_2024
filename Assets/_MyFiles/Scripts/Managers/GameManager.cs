@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform PlayerSpawn;
     private GameObject Player;
     [Header("Wave Data")]
-    [SerializeField] GameObject BattleUI;
     [SerializeField] Wave[] Waves;
     [Header("UI")]
     [SerializeField] private UIManager UIManager;
@@ -60,13 +59,12 @@ public class GameManager : MonoBehaviour
     }
     public GameObject GetPlayer() { return Player; }
 
-    public GameObject GetBattleUI() { return BattleUI; }
     public void DestroyInventoryUIManager()
     {
         Destroy(UIManager);
         UIManager = null;
     }
-    public UIManager GetInventoryUIManager() { return UIManager; }
+    public UIManager GetUIManager() { return UIManager; }
     public void CreateBattleManager(List<GameObject> enemyBattleList)
     {
         if (CurrentBattle) { return; }
@@ -81,7 +79,7 @@ public class GameManager : MonoBehaviour
     {
         Destroy(CurrentBattle);
         CurrentBattle = null;
-    }
+    } 
     public void EndTurnManager()
     {
         CurrentBattle.EndTurn();

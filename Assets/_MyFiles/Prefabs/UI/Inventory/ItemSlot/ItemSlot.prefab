@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4246863246749618251}
   - component: {fileID: 8709495867754903947}
   - component: {fileID: 4414803588798982574}
-  - component: {fileID: 9107730253298861088}
   - component: {fileID: 1469611667659727462}
+  - component: {fileID: -2523183433389479970}
   m_Layer: 5
   m_Name: ItemSlot
   m_TagString: Untagged
@@ -77,18 +77,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9107730253298861088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4379400861373936374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5180d8824ff50344389f8328d6375938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1469611667659727462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,3 +101,16 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &-2523183433389479970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4379400861373936374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4266667f1e6fd4f4db5f645b66f6e378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 4

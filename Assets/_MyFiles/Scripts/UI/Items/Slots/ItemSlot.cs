@@ -3,11 +3,15 @@ using UnityEngine.EventSystems;
 
 public class ItemSlot : InventorySlot
 {
+    [SerializeField] private EEquipmentType itemType = EEquipmentType.Weapon;
     public override void OnDrop(PointerEventData eventData)
     {
-        if (transform.GetChild(0).GetComponent<DraggableItem>().GetItemType() == EEquipmentType.Item)
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+        if(draggableItem.GetItemType() == itemType)
         {
             base.OnDrop(eventData);
+            draggableItem.SetIsInShop(false);
         }
     }
 }

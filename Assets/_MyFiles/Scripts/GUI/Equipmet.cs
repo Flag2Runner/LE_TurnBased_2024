@@ -31,4 +31,4 @@ public class Equipmet : Item
     public EEquipmentType GetEqupmentType() { return EquipmentType; }
 
 }
-public enum EEquipmentType { Armor, Item, Count }
+public enum EEquipmentType { Helmet, Chest, Pants, Shoes, Weapon, Amulet, Ring, None, Count }

@@ -2056,9 +2056,11 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 3216338864148412904, guid: ea34909c5eb8d0c4aaf2b2bc74d90cfe, type: 3}
   PlayerSpawn: {fileID: 1272880215}
   BattleUI: {fileID: 0}
-  Waves: []
+  Waves:
+  - enemys:
+    - {fileID: 7526620538210316320, guid: 831fd056b68b7af4da937ea4099b56aa, type: 3}
   UIManager: {fileID: 6712470007318244914, guid: e7650e359b71137469a21b01f9615d2d, type: 3}
-  InventorySlotUI: {fileID: 8936946518984635137, guid: 68b63642a9d9def46ac56b15786c3614, type: 3}
+  InventorySlotUI: {fileID: 4379400861373936374, guid: e1f41998862b4964392fd2d009aadd5c, type: 3}
   CurrentBattle: {fileID: 0}
 --- !u!4 &2146665941
 Transform:
